@@ -13,7 +13,7 @@ with open('levelsfyi.json', encoding='utf-8') as inputfile:
     df = pd.read_json(inputfile)
 
 df.to_csv('levelsfyi.csv', encoding='utf-8', index=False)
-
+df = pd.read_csv('levelsfyi.csv')
 # drop variables
 # otherdetails seems to have been corrupted
 # cityid, rowNumber, dmaid will not be used in this analysis
@@ -33,6 +33,11 @@ df['state'] = df['location'].apply(lambda x: x.split(', ')[1])
 # prior experience = Years of experience - years at company
 df['priorXP'] = df['yearsofexperience']-df['yearsatcompany']
 
+# save cleaned data
+df_clean = df
+df_clean.to_csv('levelsfyi_cleaned.csv', index = False)
+pd.read_csv('levelsfyi_cleaned.csv')
+
 """
 This variable became corrupted and rather than trying too hard to fix it, I decided to remove the 'otherdetails' variable
 If I get around to fixing this, it would be cool to try parsing out some of the comments 
@@ -47,3 +52,4 @@ df['bonus'].value_counts()
 df['sign on'] = df['otherdetails'].apply(lambda x: 1 if 'sign on' in x.lower() or 'signon' in x.lower() or 'sign-on' in x.lower() or 'signing' in x.lower() else 0)
 df['sign on'].value_counts()
 """
+
