@@ -2,19 +2,31 @@
 """
 Final: Independent Study
 
-author: Amber Shannon Barbosa
+Author: Amber Shannon Barbosa
 """
 
-import scraper_levelsfyi as lf
 import pandas as pd
 import numpy as np
 
-path = "C:/Users/aleig/Desktop/STA4913/"
+with open('levelsfyi.json', encoding='utf-8') as inputfile:
+    df = pd.read_json(inputfile)
+
+df.to_csv('levelsfyi.csv', encoding='utf-8', index=False)
 
 df = df.drop(['cityid', 'rowNumber'], axis = 1)
-df = df.drop(['Human Resources', 'Recuriter', 'Sales', 'Marketing', 'Product Manager', 'Management Consultant'], axis = 0)
+
+df.head(5)
+df.tail(5)
+df.title.value_counts()
+
 df = df.replace("", np.nan)
-df['otherdetails'] = df['otherdetails'].astype(str)
+
+# delete rows based on condition in column
+# remove non-STEM job titles from Title variable
+print(df)
+indexNonStem = df[(df['title'] == 'Human Resources') | (df['title'] == 'Recruiter') | (df['title'] == 'Sales') | (df['title'] == 'Marketing') | (df['title'] == 'Product Manager') | (df['title'] == 'Management Consultant')].index
+df.drop(indexNonStem, inplace=True)
+df.title.value_counts()
 
 # Separate variable for state
 df['state'] = df['location'].apply(lambda x: x.split(', ')[1])
@@ -23,10 +35,11 @@ df['state'] = df['location'].apply(lambda x: x.split(', ')[1])
 df['priorXP'] = df['yearsofexperience']-df['yearsatcompany']
 
 # parsing out otherdetails variable
+# change otherdetails variable to string
+df['otherdetails'] = df['otherdetails'].astype(str)
 # bonus
 df['bonus'] = df['otherdetails'].apply(lambda x: 1 if 'bonus' in x.lower() else 0)
 df['bonus'].value_counts()
 # sign on, signon, sign-on, signing
 df['sign on'] = df['otherdetails'].apply(lambda x: 1 if 'sign on' in x.lower() or 'signon' in x.lower() or 'sign-on' in x.lower() or 'signing' in x.lower() else 0)
 df['sign on'].value_counts()
-
