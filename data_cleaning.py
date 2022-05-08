@@ -52,3 +52,4 @@ df['bonus'].value_counts()
 df['sign on'] = df['otherdetails'].apply(lambda x: 1 if 'sign on' in x.lower() or 'signon' in x.lower() or 'sign-on' in x.lower() or 'signing' in x.lower() else 0)
 df['sign on'].value_counts()
 """
+
