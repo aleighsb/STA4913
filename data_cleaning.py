@@ -32,3 +32,18 @@ df['state'] = df['location'].apply(lambda x: x.split(', ')[1])
 
 # prior experience = Years of experience - years at company
 df['priorXP'] = df['yearsofexperience']-df['yearsatcompany']
+
+"""
+This variable became corrupted and rather than trying too hard to fix it, I decided to remove the 'otherdetails' variable
+If I get around to fixing this, it would be cool to try parsing out some of the comments 
+
+# parsing out otherdetails variable
+# change otherdetails variable to string
+df['otherdetails'] = df['otherdetails'].astype(str)
+# bonus
+df['bonus'] = df['otherdetails'].apply(lambda x: 1 if 'bonus' in x.lower() else 0)
+df['bonus'].value_counts()
+# sign on, signon, sign-on, signing
+df['sign on'] = df['otherdetails'].apply(lambda x: 1 if 'sign on' in x.lower() or 'signon' in x.lower() or 'sign-on' in x.lower() or 'signing' in x.lower() else 0)
+df['sign on'].value_counts()
+"""
